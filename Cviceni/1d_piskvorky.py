@@ -1,5 +1,5 @@
 from random import randrange
-import zamen
+from zamen import zamen
 kolo = 0
 pole = 'xxoxox-'
 
@@ -14,7 +14,8 @@ def vyhodnot(pole):
         return '-'
 
 def tah(pole, cislo_policka, symbol):
-    return print(zamen(pole, cislo_policka, symbol))
+    pole = zamen(pole, cislo_policka, symbol)
+
 
 def tah_hrace(pole):
     '''"Vrátí herní pole s daným symbolem umístěným na danou pozici"'''
@@ -22,13 +23,21 @@ def tah_hrace(pole):
         pozice = int(input('Na jakou pozici chceš hrát? '))
         if pozice < 0 or pozice > 19:
             print('Zadej číslo mezi 0 a 19!')
-        else: tah(pole, pozice, 'x')
+        else:
+            symbol = 'x'
+            pole = tah(pole, pozice, symbol)
+
 
 def tah_pocitace(pole):
     '''"Vrátí herní pole se zaznamenaným tahem počítače"'''
     while True:
         pozice = randrange(0, 19)
-        if 
+
+print(pole)
+tah_hrace(pole)
+print(pole)
+tah_pocitace
+
 
 
 

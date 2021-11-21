@@ -2,6 +2,7 @@ from random import randrange
 from zamen import zamen
 kolo = 0
 pole = 'xxoxox-'
+# pozice = int()
 
 def vyhodnot(pole):
     if 'xxx' in pole:
@@ -24,8 +25,8 @@ def tah_hrace(pole):
         if pozice < 0 or pozice > 19:
             print('Zadej číslo mezi 0 a 19!')
         else:
-            symbol = 'x'
-            pole = tah(pole, pozice, symbol)
+            tah(pole, pozice, 'x')
+            break
 
 
 def tah_pocitace(pole):

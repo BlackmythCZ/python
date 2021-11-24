@@ -33,4 +33,22 @@ dalsi_prvocisla = [23, 29, 31]
 prvocisla.extend(dalsi_prvocisla)
 print(prvocisla)
 
+# Metoda extend umí pracovat i s jinými typy než se seznamy – ráda zpracuje cokoli, přes co umí cyklit for: např. jednotlivé znaky řetězců, řádky souborů, nebo čísla z range().
+seznam = []
+seznam.extend('abcdef')
+seznam.extend(range(10))
+print(seznam)
+
+# Seznamům se dají i měnit jednotlivé prvky a to jednoduše tak, že do prvku přiřadíme, jako by to byla proměnná:
+cisla = [1, 0, 3, 4]
+cisla[1] = 2
+print(cisla)
+
+# řiřazovat se dá i do podseznamu – v tomto případě se podseznam nahradí jednotlivými prvky z toho, co přiřazujeme. Jako u extend můžeš do podseznamu opět přiřadit cokoli, co umí zpracovat for – seznam, řetězec, range() apod.
+cisla = [1, 2, 3, 4]
+cisla[1:-1] = [6, 5]
+print(cisla)
+
+
+
 

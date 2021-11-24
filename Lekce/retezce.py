@@ -5,7 +5,6 @@ print(retezec.lower())
 print(retezec)'''
 
 #Program na vypsání iniciál
-
 jmeno = input('Napiš své jméno: ')
 prijmeni = input('Napiš své přijmení: ')
 

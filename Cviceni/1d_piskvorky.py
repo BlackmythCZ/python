@@ -34,10 +34,11 @@ def tah_pocitace(pole):
     while True:
         pozice = randrange(0, 19)
 
-print(pole)
-tah_hrace(pole)
-print(pole)
-tah_pocitace
+# zakomentováno aby šlo tento soubor využít jako modul. Volání funkce je v samostatném souboru hra.py.
+# print(pole)
+# tah_hrace(pole)
+# print(pole)
+# tah_pocitace
 
 
 

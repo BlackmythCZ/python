@@ -148,4 +148,20 @@ print(zaznamy)
 veta = ' '.join(slova)
 print(veta)
 
+# Modul random obsahuje dvě funkce, které se hodí k seznamům. Jako random.randrange, obě mají něco společného s náhodou.
+# Funkce shuffle seznam „zamíchá” – všechny prvky náhodně popřehází. Jako metoda sort i funkce shuffle nic nevrací.
+import random
 
+balicek = []
+for barva in '♠', '♥', '♦', '♣':
+    for hodnota in list(range(2, 11)) + ['J', 'Q', 'K', 'A']:
+        balicek.append(str(hodnota) + barva)
+print(balicek)
+
+random.shuffle(balicek)
+print(balicek)
+
+# A funkce choice ze seznamu vybere jeden náhodný prvek. S použitím seznamu tak můžeme výrazně zjednodušit úvodní část naší staré hry kámen/nůžky/papír:
+import random
+mozne_tahy = ['kámen', 'nůžky', 'papír']
+tah_pocitace = random.choice(mozne_tahy)

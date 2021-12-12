@@ -21,6 +21,7 @@ rychlost_mice = [0, 0] #x, y složky rychlosti míčku - nastavené v reset()
 stisknute_klavesy = set() # sada stisknutých kláves
 skore = [0, 0] # skore dvou hráčů
 
+from os import times
 from pyglet import gl
 
 def vykresli_obdelnik(x1, y1, x2, y2):
@@ -74,14 +75,14 @@ def vykresli():
     nakresli_text(
         str(skore[0]),
         x = ODSAZENI_TEXT,
-        y = VYSKA - VELIKOST_FONTU,
+        y = VYSKA - VELIKOST_FONTU - ODSAZENI_TEXT,
         pozice_x = "left",
     )
     #vykreslí skóre druhého hráče
     nakresli_text(
         str(skore[1]),
         x = SIRKA - ODSAZENI_TEXT,
-        y = VYSKA - VELIKOST_FONTU,
+        y = VYSKA - VELIKOST_FONTU - ODSAZENI_TEXT,
         pozice_x = 'right',
     )
 
@@ -117,9 +118,48 @@ def nakresli_text(text, x, y, pozice_x):
     )
     napis.draw()
 
+from pyglet.window import key
+def stisk_klavesy(symbol, modifikatory):
+    if symbol == key.W:
+        stisknute_klavesy.add(('nahoru', 0))
+    if symbol == key.S:
+        stisknute_klavesy.add(('dolu', 0))
+    if symbol == key.UP:
+        stisknute_klavesy.add(('nahoru', 1))
+    if symbol == key.DOWN:
+        stisknute_klavesy.add(('dolu', 1))
+
+def pusteni_klavesy(symbol, modifikatory):
+    if symbol == key.W:
+        stisknute_klavesy.discard(('nahoru', 0))
+    if symbol == key.S:
+        stisknute_klavesy.discard(('dolu', 0))
+    if symbol == key.UP:
+        stisknute_klavesy.discard(('nahoru', 1))
+    if symbol == key.DOWN:
+        stisknute_klavesy.discard(('dolu', 1))
+
+def obnov_stav(dt):
+    for cislo_palky in (0, 1):
+        # pohyb podle klaves (viz funkce 'stisk_klavesy')
+        # Procházíme v cyklu obě pálky a ptáme se, zda je v množině stisknutých kláves n-tice reprezentující pohyb dané pálky nahoru nebo dolů. Když ano, pohneme pálkou v daném směru (přičteme nebo odečteme od vertikální polohy pálky změnu polohy, což je čas od posledního zavolání, který známe, vynásobený rychlostí pálky nastavené v konstantě).
+        if ('nahoru', cislo_palky) in stisknute_klavesy:
+            pozice_palek[cislo_palky] += RYCHLOST_PALKY * dt
+        if ('dolu', cislo_palky) in stisknute_klavesy:
+            pozice_palek[cislo_palky] -= RYCHLOST_PALKY * dt
+        
+        # dolní zarážka - když je pálka příliš dole, nastavíme ji na minimum
+        # Pálku malujeme kolem jejího středu, což znamená, že když se pálka přiblíží na na y-ovou pozici DELKA_PALKY / 2, začíná překračovat dolní hranici hracího pole. V tom případě její pozici zafixujeme na nejnižší možné souřadnici. Analogicky to provedeme, když se blíží hornímu okraji.
+        if pozice_palek[cislo_palky] < DELKA_PALKY / 2:
+            pozice_palek[cislo_palky] = DELKA_PALKY / 2
+        if pozice_palek[cislo_palky] > (VYSKA - DELKA_PALKY / 2):
+            pozice_palek[cislo_palky] = (VYSKA - DELKA_PALKY / 2)
+
 window = pyglet.window.Window(width = SIRKA, height = VYSKA)
 window.push_handlers(
-    on_draw = vykresli, #na vykreslení okna použij funkci 'vykresli'
+    on_draw = vykresli, # na vykreslení okna použij funkci 'vykresli'
+    on_key_press = stisk_klavesy, # na stisk klávesy provede
+    on_key_release = pusteni_klavesy, # na uvolnění klávesy provede
 )
-
+pyglet.clock.schedule(obnov_stav) # zaregistruje danou funkci na tik hodin   
 pyglet.app.run() # vše je nastaveno, ať začně hra!

@@ -10,7 +10,7 @@ DELKA_PALKY = 100
 RYCHLOST = 200 # V pixelech za sekundu
 RYCHLOST_PALKY = RYCHLOST * 1.5 # taky v pixelech za sekundu
 
-SIRKA_PULICI_CARKY = 20
+DELKA_PULICI_CARKY = 20
 VELIKOST_FONTU = 42
 ODSAZENI_TEXT = 30
 
@@ -70,6 +70,52 @@ def vykresli():
         SIRKA,
         pozice_palek[1] + DELKA_PALKY // 2,
     )
+    #vykreslí skóre prvního hráče
+    nakresli_text(
+        str(skore[0]),
+        x = ODSAZENI_TEXT,
+        y = VYSKA - VELIKOST_FONTU,
+        pozice_x = "left",
+    )
+    #vykreslí skóre druhého hráče
+    nakresli_text(
+        str(skore[1]),
+        x = SIRKA - ODSAZENI_TEXT,
+        y = VYSKA - VELIKOST_FONTU,
+        pozice_x = 'right',
+    )
+
+
+# Nebo alternativně podle návodu:
+#    for x, y in [(0, pozice_palek[0]), (SIRKA, pozice_palek[1])]:
+#        nakresli_obdelnik(
+#            x - TLOUSTKA_PALKY,
+#            y - DELKA_PALKY // 2,
+#            x + TLOUSTKA_PALKY,
+#            y + DELKA_PALKY // 2,
+#        )
+
+    # vykresli půlící čáru
+    for y in range(DELKA_PULICI_CARKY // 2, VYSKA, DELKA_PULICI_CARKY * 2):
+        vykresli_obdelnik(
+            SIRKA // 2 - 1,
+            y,
+            SIRKA // 2 + 1,
+            y + DELKA_PULICI_CARKY
+        )
+
+def nakresli_text(text, x, y, pozice_x):
+    '''
+    Nakreslí daný text na danou pozici
+
+    Argument 'pozice_x' může být 'left' nebo 'right', udává na kterou stranu bude text zarovnaný
+    '''
+    napis = pyglet.text.Label(
+        text,
+        font_size=VELIKOST_FONTU,
+        x = x, y = y, anchor_x = pozice_x
+    )
+    napis.draw()
 
 window = pyglet.window.Window(width = SIRKA, height = VYSKA)
 window.push_handlers(

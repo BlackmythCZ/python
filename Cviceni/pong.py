@@ -22,6 +22,7 @@ stisknute_klavesy = set() # sada stisknutých kláves
 skore = [0, 0] # skore dvou hráčů
 
 from os import times
+import random
 from pyglet import gl
 
 def vykresli_obdelnik(x1, y1, x2, y2):
@@ -154,6 +155,26 @@ def obnov_stav(dt):
             pozice_palek[cislo_palky] = DELKA_PALKY / 2
         if pozice_palek[cislo_palky] > (VYSKA - DELKA_PALKY / 2):
             pozice_palek[cislo_palky] = (VYSKA - DELKA_PALKY / 2)
+
+        # pohyb míčku
+        pozice_mice[0] += rychlost_mice[0] * dt
+        pozice_mice[1] += rychlost_mice[1] * dt
+
+from random import randint
+def reset():
+    pozice_mice[0] = SIRKA / 2
+    pozice_mice[1] = VYSKA / 2
+
+    # x-ová rychlost - buď vpravo, nebo vlevo
+    if randint(0, 1):
+        rychlost_mice[0] = RYCHLOST
+    else:
+        rychlost_mice[0] = -RYCHLOST
+    
+    rychlost_mice[1] = random.uniform(-1, 1) * RYCHLOST
+
+# nastaví výchozí stav pro start hry
+reset()
 
 window = pyglet.window.Window(width = SIRKA, height = VYSKA)
 window.push_handlers(

@@ -7,7 +7,7 @@ VYSKA = 600
 VELIKOST_MICE = 20
 TLOUSTKA_PALKY = 10
 DELKA_PALKY = 100
-RYCHLOST = 200 # V pixelech za sekundu
+RYCHLOST = 100 # V pixelech za sekundu
 RYCHLOST_PALKY = RYCHLOST * 1.5 # taky v pixelech za sekundu
 
 DELKA_PULICI_CARKY = 20
@@ -159,6 +159,36 @@ def obnov_stav(dt):
         # pohyb míčku
         pozice_mice[0] += rychlost_mice[0] * dt
         pozice_mice[1] += rychlost_mice[1] * dt
+
+        # odraz míčku od stěn
+        # Jelikož úhel dopadu se rovná úhlu odrazu, stačí otočit znaménko y-ové složky rychlosti.
+        if pozice_mice[1] < VELIKOST_MICE // 2:
+            rychlost_mice[1] = abs(rychlost_mice[1])
+        if pozice_mice[1] > VYSKA - VELIKOST_MICE // 2:
+            rychlost_mice[1] = -abs(rychlost_mice[1])
+        
+        # definice mezí na y-ové ose, kde se musí míček nacházet, aby byl úspěšně odražen – to je mezi horním a dolním koncem pálky:
+        palka_min = pozice_mice[1] - VELIKOST_MICE / 2 - DELKA_PALKY / 2
+        palka_max = pozice_mice[1] + VELIKOST_MICE / 2 + DELKA_PALKY / 2
+
+        # Nyní když míček narazí do pravé nebo levé stěny se umíme zeptat, zda je pálka na správné pozici a my máme odrazit míček nebo zda hráč prohrál kolo a my máme přičíst jeho soupeři bod a restartovat hru.
+        # odražení vlevo
+        if pozice_mice[0] < TLOUSTKA_PALKY + VELIKOST_MICE / 2:
+            if palka_min < pozice_palek[0] < palka_max:
+                # pálka je na správném místě, odrazí míček
+                rychlost_mice[0] = abs(rychlost_mice[0])
+            else:
+                # pálka není na správném místě
+                skore[1] += 1
+                reset()
+        # odražení vpravo
+        if pozice_mice[0] > SIRKA - (TLOUSTKA_PALKY - VELIKOST_MICE / 2):
+            if palka_min < pozice_palek[1] < palka_max:
+                # pálka je na správném místě, odrazí míček
+                rychlost_mice[0] = -abs(rychlost_mice[0])
+            else:
+                skore[0] += 1
+                reset()
 
 from random import randint
 def reset():

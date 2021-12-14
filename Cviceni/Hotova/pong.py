@@ -7,7 +7,7 @@ VYSKA = 600
 VELIKOST_MICE = 20
 TLOUSTKA_PALKY = 10
 DELKA_PALKY = 100
-RYCHLOST = 100 # V pixelech za sekundu
+RYCHLOST = 150 # V pixelech za sekundu
 RYCHLOST_PALKY = RYCHLOST * 1.5 # taky v pixelech za sekundu
 
 DELKA_PULICI_CARKY = 20
@@ -26,9 +26,9 @@ import random
 from pyglet import gl
 
 def vykresli_obdelnik(x1, y1, x2, y2):
-    """Nakresli obdelnik na dane souradnice
+    """Nakresli obdélník na dané souřadnice
 
-    Nazorny diagram::
+    Názorný diagram::
 
          y2 - +-----+
               |/////|
